@@ -8,25 +8,26 @@ import EditRecipeForm from './components/EditRecipeForm'
 function App() {
   return (
     <div className="app">
-      <header>
+      <header className="app-header">
         <h1>Recipe Sharing App</h1>
         <nav>
-          <Link to="/">Home</Link>
+          <Link to="/" className="nav-link">Home</Link>
+          <Link to="/add-recipe" className="nav-link">Add New Recipe</Link>
         </nav>
       </header>
       
-      <main>
+      <main className="app-main">
         <Routes>
-          <Route path="/" element={
-            <>
-              <AddRecipeForm />
-              <RecipeList />
-            </>
-          } />
+          <Route path="/" element={<RecipeList />} />
+          <Route path="/add-recipe" element={<AddRecipeForm />} />
           <Route path="/recipe/:id" element={<RecipeDetails />} />
           <Route path="/edit/:id" element={<EditRecipeForm />} />
         </Routes>
       </main>
+      
+      <footer className="app-footer">
+        <p>© 2023 Recipe Sharing App</p>
+      </footer>
     </div>
   )
 }

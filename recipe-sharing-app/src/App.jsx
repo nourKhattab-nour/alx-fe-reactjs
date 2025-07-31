@@ -1,3 +1,4 @@
+// src/App.jsx
 import './App.css'
 import { Routes, Route, Link } from 'react-router-dom'
 import RecipeList from './components/RecipeList'
@@ -11,8 +12,8 @@ function App() {
       <header className="app-header">
         <h1>Recipe Sharing App</h1>
         <nav>
-          <Link to="/" className="nav-link">Home</Link>
-          <Link to="/add-recipe" className="nav-link">Add New Recipe</Link>
+          <Link to="/" className="nav-link">All Recipes</Link>
+          <Link to="/add-recipe" className="nav-link">Add Recipe</Link>
         </nav>
       </header>
       
@@ -26,7 +27,7 @@ function App() {
       </main>
       
       <footer className="app-footer">
-        <p>© 2023 Recipe Sharing App</p>
+        <p>© {new Date().getFullYear()} Recipe Sharing App</p>
       </footer>
     </div>
   )

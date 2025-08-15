@@ -9,6 +9,7 @@ function Search() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!username.trim()) return;
 
     setLoading(true);
@@ -26,37 +27,40 @@ function Search() {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <form onSubmit={handleSubmit} style={{ marginBottom: "20px" }}>
+    <div className="p-6">
+      <form onSubmit={handleSubmit} className="mb-4">
         <input
           type="text"
           placeholder="Enter GitHub username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          style={{
-            padding: "8px",
-            marginRight: "10px",
-            border: "1px solid #ccc",
-            borderRadius: "4px"
-          }}
+          className="border p-2 mr-2 rounded"
         />
-        <button type="submit" style={{ padding: "8px 12px" }}>
+        <button
+          type="submit"
+          className="bg-blue-500 text-white px-4 py-2 rounded"
+        >
           Search
         </button>
       </form>
 
       {/* Conditional Rendering */}
       {loading && <p>Loading...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p className="text-red-500">{error}</p>}
       {user && (
-        <div style={{ border: "1px solid #ddd", padding: "15px", borderRadius: "5px" }}>
+        <div className="border p-4 rounded">
           <img
             src={user.avatar_url}
             alt={user.login}
-            style={{ width: "100px", borderRadius: "50%" }}
+            className="w-24 h-24 rounded-full"
           />
-          <h2>{user.name || user.login}</h2>
-          <a href={user.html_url} target="_blank" rel="noopener noreferrer">
+          <h2 className="text-lg font-bold">{user.name || user.login}</h2>
+          <a
+            href={user.html_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 underline"
+          >
             View Profile
           </a>
         </div>

@@ -1,20 +1,10 @@
 import axios from "axios";
 
-const API_URL =
-  import.meta.env.VITE_APP_GITHUB_API_URL || "https://api.github.com";
-
 export const fetchUserData = async (username) => {
   try {
-    const response = await axios.get(`${API_URL}/users/${username}`);
-    return {
-      data: response.data,
-      error: null,
-    };
+    const response = await axios.get(`https://api.github.com/users/${username}`);
+    return response.data;
   } catch (error) {
-    return {
-      data: null,
-      error:
-        error.response?.status === 404 ? "User not found" : "An error occurred",
-    };
+    throw error; // Let component handle it
   }
 };

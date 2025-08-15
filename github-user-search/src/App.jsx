@@ -3,8 +3,10 @@ import Search from "./components/Search";
 
 function App() {
   return (
-    <div style={{ fontFamily: "Arial" }}>
-      <h1 style={{ textAlign: "center" }}>GitHub User Search</h1>
+    <div className="font-sans">
+      <h1 className="text-2xl font-bold text-center my-6">
+        GitHub User Search
+      </h1>
       <Search />
     </div>
   );

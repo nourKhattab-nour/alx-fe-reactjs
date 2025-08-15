@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { fetchUserData } from "./services/github.service";
-import SearchBar from "./components/SearchBar/SearchBar";
-import SearchResults from "./components/SearchResults/SearchResults";
-import "./App.css";
+import { useState } from 'react';
+import SearchBar from './components/SearchBar';
+import UserCard from './components/UserCard';
+import { fetchUserData } from './services/githubService';
+import './App.css';
 
 function App() {
   const [userData, setUserData] = useState(null);
@@ -10,11 +10,11 @@ function App() {
   const [error, setError] = useState(null);
 
   const handleSearch = async (username) => {
-    if (!username.trim()) return;
-
+    if (!username) return;
+    
     setLoading(true);
     setError(null);
-
+    
     try {
       const { data, error } = await fetchUserData(username);
       if (error) {
@@ -24,7 +24,7 @@ function App() {
         setUserData(data);
       }
     } catch (err) {
-      setError("An unexpected error occurred");
+      setError('An unexpected error occurred');
       setUserData(null);
     } finally {
       setLoading(false);
@@ -35,7 +35,10 @@ function App() {
     <div className="app">
       <h1>GitHub User Search</h1>
       <SearchBar onSearch={handleSearch} />
-      <SearchResults userData={userData} loading={loading} error={error} />
+      
+      {loading && <div className="loading">Loading...</div>}
+      {error && <div className="error">{error}</div>}
+      {userData && <UserCard user={userData} />}
     </div>
   );
 }

@@ -1,14 +1,9 @@
-// src/components/UserCard/index.js
 import PropTypes from 'prop-types';
 
 const UserCard = ({ user }) => {
   return (
     <div className="user-card">
-      <img 
-        src={user.avatar_url} 
-        alt={user.login} 
-        className="user-avatar"
-      />
+      <img src={user.avatar_url} alt={user.login} className="user-avatar" />
       <div className="user-info">
         <h2>{user.name || user.login}</h2>
         {user.bio && <p className="user-bio">{user.bio}</p>}

@@ -1,72 +1,85 @@
 import { useState } from 'react';
-import SearchBar from './components/SearchBar';
-import UserCard from './components/UserCard';
-import { fetchUserData } from './services/githubService';
+import axios from 'axios';
 import './App.css';
 
 function App() {
+  // State management
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [username, setUsername] = useState('');
 
-  const handleSearch = async (username) => {
-    // Skip search if empty or same as previous search
-    if (!username.trim() || username === searchTerm) return;
-    
-    setSearchTerm(username);
+  // API call function
+  const fetchUserData = async (username) => {
+    try {
+      const response = await axios.get(`https://api.github.com/users/${username}`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.status === 404 
+        ? 'User not found' 
+        : 'Failed to fetch data';
+    }
+  };
+
+  // Search handler
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (!username.trim()) return;
+
     setLoading(true);
     setError(null);
-    setUserData(null); // Clear previous results
-    
+    setUserData(null);
+
     try {
-      const { data, error } = await fetchUserData(username);
-      
-      if (error) {
-        setError(error);
-      } else {
-        setUserData(data);
-      }
+      const data = await fetchUserData(username);
+      setUserData(data);
     } catch (err) {
-      setError('Failed to connect to GitHub API');
-      console.error('API Error:', err);
+      setError(typeof err === 'string' ? err : 'API request failed');
     } finally {
       setLoading(false);
     }
   };
 
+  // User Card Component (moved inside App)
+  const UserCard = ({ user }) => (
+    <div className="user-card">
+      <img src={user.avatar_url} alt={user.login} />
+      <h2>{user.name || user.login}</h2>
+      {user.bio && <p>{user.bio}</p>}
+      <div className="stats">
+        <span>Followers: {user.followers}</span>
+        <span>Following: {user.following}</span>
+        <span>Repos: {user.public_repos}</span>
+      </div>
+      <a href={user.html_url} target="_blank" rel="noopener noreferrer">
+        View Profile
+      </a>
+    </div>
+  );
+
+  // Search Bar Component (moved inside App)
+  const SearchBar = () => (
+    <form onSubmit={handleSearch} className="search-form">
+      <input
+        type="text"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        placeholder="Enter GitHub username"
+      />
+      <button type="submit" disabled={loading}>
+        {loading ? 'Searching...' : 'Search'}
+      </button>
+    </form>
+  );
+
   return (
     <div className="app">
-      <header className="app-header">
-        <h1>GitHub User Search</h1>
-        <p>Find any GitHub user profile</p>
-      </header>
+      <h1>GitHub User Search</h1>
+      <SearchBar />
       
-      <main className="app-content">
-        <SearchBar onSearch={handleSearch} />
-        
-        {loading && (
-          <div className="status-message loading">
-            <div className="spinner"></div>
-            <p>Searching for {searchTerm}...</p>
-          </div>
-        )}
-        
-        {error && (
-          <div className="status-message error">
-            <p>⚠️ {error}</p>
-            {error.includes('not found') && (
-              <p>Please check the username and try again</p>
-            )}
-          </div>
-        )}
-        
-        {userData && <UserCard user={userData} />}
-      </main>
-      
-      <footer className="app-footer">
-        <p>Uses GitHub's public API</p>
-      </footer>
+      {loading && <div className="status">Loading...</div>}
+      {error && <div className="error">{error}</div>}
+      {userData && <UserCard user={userData} />}
     </div>
   );
 }

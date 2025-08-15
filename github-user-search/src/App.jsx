@@ -8,24 +8,28 @@ function App() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearch = async (username) => {
-    if (!username) return;
+    // Skip search if empty or same as previous search
+    if (!username.trim() || username === searchTerm) return;
     
+    setSearchTerm(username);
     setLoading(true);
     setError(null);
+    setUserData(null); // Clear previous results
     
     try {
       const { data, error } = await fetchUserData(username);
+      
       if (error) {
         setError(error);
-        setUserData(null);
       } else {
         setUserData(data);
       }
     } catch (err) {
-      setError('An unexpected error occurred');
-      setUserData(null);
+      setError('Failed to connect to GitHub API');
+      console.error('API Error:', err);
     } finally {
       setLoading(false);
     }
@@ -33,12 +37,36 @@ function App() {
 
   return (
     <div className="app">
-      <h1>GitHub User Search</h1>
-      <SearchBar onSearch={handleSearch} />
+      <header className="app-header">
+        <h1>GitHub User Search</h1>
+        <p>Find any GitHub user profile</p>
+      </header>
       
-      {loading && <div className="loading">Loading...</div>}
-      {error && <div className="error">{error}</div>}
-      {userData && <UserCard user={userData} />}
+      <main className="app-content">
+        <SearchBar onSearch={handleSearch} />
+        
+        {loading && (
+          <div className="status-message loading">
+            <div className="spinner"></div>
+            <p>Searching for {searchTerm}...</p>
+          </div>
+        )}
+        
+        {error && (
+          <div className="status-message error">
+            <p>⚠️ {error}</p>
+            {error.includes('not found') && (
+              <p>Please check the username and try again</p>
+            )}
+          </div>
+        )}
+        
+        {userData && <UserCard user={userData} />}
+      </main>
+      
+      <footer className="app-footer">
+        <p>Uses GitHub's public API</p>
+      </footer>
     </div>
   );
 }

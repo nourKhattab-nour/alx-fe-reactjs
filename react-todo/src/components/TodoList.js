@@ -8,12 +8,10 @@ function TodoList() {
     { id: 3, text: "Write Tests", completed: false },
   ]);
 
-  // Add new todo
   const addTodo = (text) => {
     setTodos([...todos, { id: Date.now(), text, completed: false }]);
   };
 
-  // Toggle completion
   const toggleTodo = (id) => {
     setTodos(
       todos.map((todo) =>
@@ -22,7 +20,6 @@ function TodoList() {
     );
   };
 
-  // Delete todo
   const deleteTodo = (id) => {
     setTodos(todos.filter((todo) => todo.id !== id));
   };

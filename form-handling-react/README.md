@@ -20,4 +20,3 @@ Features
 
 ✅ Responsive design
 
-✅ Side-by-side comparison of both approaches

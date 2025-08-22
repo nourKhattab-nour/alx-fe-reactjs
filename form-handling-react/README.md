@@ -7,16 +7,3 @@ Traditional Controlled Components - Manual state management and validation
 
 Formik with Yup - Declarative form handling with built-in validation
 
-Features
-✅ User registration form with username, email, and password fields
-
-✅ Real-time form validation
-
-✅ Error message display
-
-✅ Loading states during submission
-
-✅ Mock API integration
-
-✅ Responsive design
-

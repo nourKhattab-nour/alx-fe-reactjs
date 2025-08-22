@@ -46,4 +46,69 @@ const RegistrationForm = () => {
     }
   };
 
-  ret
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="p-4 border rounded-md shadow-md w-80"
+    >
+      <h2 className="text-xl font-bold mb-3">Register</h2>
+
+      {error && <p className="text-red-500 mb-2">{error}</p>}
+
+      <div className="mb-2">
+        <label className="block mb-1" htmlFor="username">
+          Username
+        </label>
+        <input
+          id="username"
+          name="username"
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className="border p-2 w-full rounded"
+          autoComplete="username"
+        />
+      </div>
+
+      <div className="mb-2">
+        <label className="block mb-1" htmlFor="email">
+          Email
+        </label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="border p-2 w-full rounded"
+          autoComplete="email"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label className="block mb-1" htmlFor="password">
+          Password
+        </label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="border p-2 w-full rounded"
+          autoComplete="new-password"
+        />
+      </div>
+
+      <button
+        type="submit"
+        disabled={loading}
+        className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-60"
+      >
+        {loading ? "Submitting..." : "Register"}
+      </button>
+    </form>
+  );
+};
+
+export default RegistrationForm;

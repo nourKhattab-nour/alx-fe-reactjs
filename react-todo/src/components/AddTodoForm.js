@@ -11,7 +11,7 @@ function AddTodoForm({ addTodo }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} data-testid="add-todo-form">
       <input
         type="text"
         placeholder="Add a new todo"

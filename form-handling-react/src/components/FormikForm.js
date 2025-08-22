@@ -11,7 +11,7 @@ const validationSchema = Yup.object({
     .required("Password is required"),
 });
 
-const FormikForm = () => {
+function FormikForm() {
   return (
     <Formik
       initialValues={{ username: "", email: "", password: "" }}
@@ -26,6 +26,8 @@ const FormikForm = () => {
               body: JSON.stringify(values),
             }
           );
+
+          if (!response.ok) throw new Error("Network error");
 
           const data = await response.json();
           console.log("User registered:", data);
@@ -42,36 +44,53 @@ const FormikForm = () => {
           <h2 className="text-xl font-bold mb-3">Register with Formik</h2>
 
           <div className="mb-2">
-            <label className="block">Username</label>
-            <Field type="text" name="username" className="border p-2 w-full" />
+            <label className="block mb-1" htmlFor="username">
+              Username
+            </label>
+            <Field
+              id="username"
+              type="text"
+              name="username"
+              className="border p-2 w-full rounded"
+            />
             <ErrorMessage
               name="username"
               component="div"
-              className="text-red-500"
+              className="text-red-500 text-sm"
             />
           </div>
 
           <div className="mb-2">
-            <label className="block">Email</label>
-            <Field type="email" name="email" className="border p-2 w-full" />
+            <label className="block mb-1" htmlFor="email">
+              Email
+            </label>
+            <Field
+              id="email"
+              type="email"
+              name="email"
+              className="border p-2 w-full rounded"
+            />
             <ErrorMessage
               name="email"
               component="div"
-              className="text-red-500"
+              className="text-red-500 text-sm"
             />
           </div>
 
-          <div className="mb-2">
-            <label className="block">Password</label>
+          <div className="mb-4">
+            <label className="block mb-1" htmlFor="password">
+              Password
+            </label>
             <Field
+              id="password"
               type="password"
               name="password"
-              className="border p-2 w-full"
+              className="border p-2 w-full rounded"
             />
             <ErrorMessage
               name="password"
               component="div"
-              className="text-red-500"
+              className="text-red-500 text-sm"
             />
           </div>
 
@@ -85,6 +104,6 @@ const FormikForm = () => {
       )}
     </Formik>
   );
-};
+}
 
 export default FormikForm;

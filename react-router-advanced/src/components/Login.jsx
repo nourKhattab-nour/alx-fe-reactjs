@@ -1,28 +1,30 @@
-import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 
-const Login = ({ onLogin }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+const Login = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
-
-  const from = location.state?.from?.pathname || "/profile";
+  const { login } = useAuth();
+  
+  const from = location.state?.from?.pathname || '/profile';
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    
     // Simple authentication simulation
     if (username && password) {
-      onLogin({
+      login({
         name: username,
-        email: `${username}@example.com`,
+        email: `${username}@example.com`
       });
-
+      
       // Redirect to the page they tried to visit or profile
       navigate(from, { replace: true });
     } else {
-      alert("Please enter both username and password");
+      alert('Please enter both username and password');
     }
   };
 
@@ -30,7 +32,7 @@ const Login = ({ onLogin }) => {
     <div className="login-container">
       <h1>Login</h1>
       <p>You must log in to view the profile page</p>
-
+      
       <form onSubmit={handleSubmit} className="login-form">
         <div className="form-group">
           <label htmlFor="username">Username:</label>
@@ -42,7 +44,7 @@ const Login = ({ onLogin }) => {
             required
           />
         </div>
-
+        
         <div className="form-group">
           <label htmlFor="password">Password:</label>
           <input
@@ -53,12 +55,10 @@ const Login = ({ onLogin }) => {
             required
           />
         </div>
-
-        <button type="submit" className="login-btn">
-          Login
-        </button>
+        
+        <button type="submit" className="login-btn">Login</button>
       </form>
-
+      
       <div className="demo-notes">
         <p>For demo purposes, any username/password will work.</p>
         <p>After login, you'll be redirected to your intended destination.</p>
